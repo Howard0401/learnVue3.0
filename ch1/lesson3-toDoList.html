@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root">
+        <div>{{content}}</div>
+    </div>
+</body>
+
+<script>
+    // 創建一個Vue實例
+    //  .mount 說明在 在 id=root起作用
+    Vue.createApp({
+        data() {
+            return { 
+                list: ['t1','t2','t3','t4'],
+                inputValue: '',
+            }
+        },
+        // 一開始加載後就會開始執行的函數
+        mounted() {
+        },
+        methods: {
+            handleAddItem() {
+                this.list.push(this.inputValue)
+                this.inputValue=''
+            }
+        },
+        template:`
+        <div>
+            <input v-model="inputValue"  />
+            <button v-on:click="handleAddItem"> 增加 </button>
+
+           <ul>
+            <li v-for="(item,index) of list">{{ item }} {{ index }}</li>
+            </ul>
+        </div>
+        `
+    }).mount('#root');
+</script>
+</html>

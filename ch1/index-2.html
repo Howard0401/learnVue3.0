@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root">
+        <div>{{content}}</div>
+    </div>
+</body>
+
+<script>
+    // 創建一個Vue實例
+    //  .mount 說明在 在 id=root起作用
+    Vue.createApp({
+        data() {
+            return { 
+                show: true,
+                content: `hello world`,
+            }
+        },
+        // 一開始加載後就會開始執行的函數
+        mounted() {
+            console.log('mounted init')
+            // setInterval(()=>{
+            //     // 指向data下的content
+            //     // this.$data.content += 1 //等同於下面
+            //     this.content +=1; 
+            // },1000)
+        },
+        methods: {
+            handleBtnClick() {
+                // alert('hellow')
+                // this.content = this.content.split('').reverse().join('');
+                // this.content = 'dlrow olleh';
+                this.show = false;
+            }
+        },
+        template:`
+            <div>
+                <span v-if="show === true"> {{ content }}</span>
+                <button v-on:click="handleBtnClick"> 顯示/隱藏 </button>
+            </div>
+        `
+    }).mount('#root');
+</script>
+</html>

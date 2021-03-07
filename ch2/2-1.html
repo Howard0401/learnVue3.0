@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root">
+        <div>{{content}}</div>
+    </div>
+</body>
+
+<script>
+    // 創建一個Vue實例, 實例名是 app
+    // 傳入給最外層組件的參數,該怎麼顯示
+    // MVVM model view viewModel
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: 'hellow world',
+            }
+        },
+        // 怎麼取它？
+        // dom: vm.$data.message
+        template: "<div>{{ message }}</div>"
+    });
+    // 掛載到id="root" (#是指id)
+    // vm 代表vue應用的根組件
+    const vm = app.mount('#root');
+
+</script>
+</html>

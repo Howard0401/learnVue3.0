@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root">
+        <div>{{content}}</div>
+    </div>
+</body>
+
+<script>
+    // 創建一個Vue實例, 實例名是app
+    const app = Vue.createApp({
+        data() {
+            return { 
+                list: ['t1','t2','t3','t4'],
+                inputValue: '',
+            }
+        },
+        // 一開始加載後就會開始執行的函數
+        mounted() {
+        },
+        methods: {
+            handleAddItem() {
+                this.list.push(this.inputValue)
+                this.inputValue = ''
+            }
+        },
+        template:`
+        <div>
+            <input v-model="inputValue"  />
+            <button 
+            v-on:click="handleAddItem"
+            v-bind:title="inputValue"
+            > 
+            增加 
+            </button>
+           <ul>
+                <todo-item 
+                v-for="(item,index) of list" 
+                v-bind:content="item"
+                v-bind:index="index"
+                />                   
+            </ul>
+        </div>
+        `
+    });
+
+    // 讓app註冊組件
+    app.component('todo-item', {
+        props: [
+            'content',
+            'index',
+        ],
+        data() {
+            return {
+                // item: 'hellow dell',
+            }
+        },
+        template: '<div> {{ index }} --- {{ content }} </div>'
+    });
+    // 掛載組件
+    app.mount('#root');
+
+</script>
+</html>
+
+
+<!-- <li v-for="(item,index) of list">
+    <span>{{ item }}</span>
+    <span>-----</span> 
+    <span>{{ index }}</span>
+</li> -->
