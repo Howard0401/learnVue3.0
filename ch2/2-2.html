@@ -26,10 +26,7 @@
         },
         
         // 生命週期: 在某時刻會自動執行的函數
-        // 1. mounted
-        mounted() {
-            alert('mounted')
-        },
+        // 1.app.mount(在下面)
         // 2. beforeCreate
         beforeCreate() {
             console.log('beforeCreate')
@@ -37,17 +34,46 @@
         // create instance
         // 3. created
         created() {
-            console.log('create')
+            console.log('created')
         },
-        // 4. has template?
+        // 4. has template? 模板編譯成函數
         // 怎麼取它？
         // dom: vm.$data.message
-        // yes
+        // yes: 在這邊取 但如果沒有就到id dom中取
         template: "<div>{{ message }}</div>",
-        // 5. beforeMount
+        // 5. beforeMount 在 template 被編譯成函數後自動執行的函數
+        beforeMount() {
+            console.log("beforeMount()")
+            console.log(document.getElementById('root').innerHTML)
+        },
+        // create app
+        // 6. mounted 在組件內容被渲染到頁面後自動執行的函數 
+        mounted() {
+            console.log("mounted()")
+            console.log(document.getElementById('root').innerHTML)
+        },
+        // 7. when data changed 當數據發生變動時，會自動執行
+        beforeUpdate() {
+            console.log('beforeUpdate')
+            console.log(document.getElementById('root').innerHTML)
+            // vm.$data.message = 'bye'
+        },
+        // 8. 當data 數據發生變化，且同時完成頁面渲染後，會自動執行
+        updated() {
+            console.log('updated')
+            console.log(document.getElementById('root').innerHTML)
+        },
+        // 9. app.unmount 當Vue實例銷毀時
+        // app.unmount()
+        // 10. unmounted() 當Vue應用失效時，且dom完全銷毀時自動執行的函數
+        unmounted() {
+            console.log(document.getElementById('root').innerHTML)
+        }, 
+
     });
     // 掛載到id="root" (#是指id)
     // vm 代表vue應用的根組件
+    // 1. mounted
     const vm = app.mount('#root');
 
 </script>
