@@ -1,0 +1,54 @@
+ <!-- 生命週期 -->
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Document</title>
+     <script src="https://unpkg.com/vue@next"></script>
+ </head>
+ <body>
+     <div id="root">
+     </div>
+ </body>
+ 
+ <script>
+      // 局部組件 (要寫在上面)
+    const Counter =  {
+        data() {
+             return {
+                 count: 1
+             }
+         },
+         template:`<div @click="count += 1">{{ count }}</div>`
+     }
+     // 因為JS不支援abc-xxx
+     // 建議局部組件開頭都大寫
+     const HellowWorld = {
+         template: `<div> hellow world</div>`
+     }
+     // 根組件使用上面的local組件
+     const app = Vue.createApp({
+         // 組件要註冊才會使用
+         components: {
+             // 自定組件名: 對應組件
+             // 嚴謹的寫法(建議)
+              counter: Counter,
+              'hellow-world': HellowWorld,
+             //  當然Vue也會自動轉換
+            //  Counter,HellowWorld
+         },
+         template: `
+        <div>
+          <counter />
+          <hellow-world />
+        </div>
+         `
+     })
+
+    
+     const vm = app.mount('#root');
+ 
+ </script>
+ </html>

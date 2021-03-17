@@ -1,0 +1,55 @@
+ <!-- 生命週期 -->
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Document</title>
+     <script src="https://unpkg.com/vue@next"></script>
+ </head>
+ <body>
+     <div id="root">
+     </div>
+ </body>
+ 
+ <script>
+
+     const app = Vue.createApp({
+         data() {
+            return {
+               params: {
+                content: 1234,   
+                a:123,
+                b:456,
+                c:789,
+               },
+            }
+         },
+         template:`
+        <div>
+            <test v-bind="params"/>
+        </div>
+         `,
+        //  <test :content="params.content" :a="params.a" :b="params.b" :c="params.c" />
+         // <test :content="num" :a="a" :b="b" :c="c" />
+         
+          //調用子組件傳遞的動態內容 `
+         
+     })
+     // type: String, Boolean, Arrat, Object, Function, Symbol
+     // required: 必填
+     // default: 默認值
+     app.component('test', {
+        // props:  ["params"], 
+        props: ['content','a','b','c'],
+        template: `<div>{{ params.content }}-{{params.a}}-{{params.b}}-{{params.c}}</div>`  ,
+        
+        // template: `<div>{{content}}-{{a}}-{{b}}-{{c}}</div>` ,
+     })
+
+    
+     const vm = app.mount('#root');
+ 
+ </script>
+ </html>
