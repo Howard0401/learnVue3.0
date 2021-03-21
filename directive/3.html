@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <style>
+        .header {
+            position: absolute
+        }
+    </style>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root">
+    </div>
+</body>
+
+<script>
+    // 第三種 使用local directives
+    const direct = {
+        focus: {
+            mounted(el) {
+                el.focus();
+            }
+        }
+    }
+    //自定義 directive
+    const app = Vue.createApp({
+        data() {
+            return {
+               top: 50,
+               distance: 110,
+            }
+        },
+        number: 2,
+        template:`
+        <div>
+            <div v-pos:abc="top" class="header">
+                <input />
+            </div>
+            
+            <br/>
+
+            <div v-pos:right="distance" class="header">
+                <input />
+            </div>
+        </div>
+        `
+    })
+
+    //使用 global directive
+    app.directive('pos', {
+       mounted(el, binding) {
+        // eg  v-pos:abc="top
+        // arg: abc value:top
+           console.log("binding",binding);
+           el.style.top = binding.value + 'px'
+           el.style[binding.arg] = (binding.value + 'px')
+       },
+       // vm.$data.top =50
+       updated(el, binding) {
+           el.style.top = binding.value + 'px'
+           el.style[binding.arg] = (binding.value + 'px')
+       },
+    })
+
+    // // 簡寫上面的方式 等價
+    // app.directive('pos', (el, binding) => {
+    //     el.style.top = binding.value + 'px'
+    // })
+
+
+    const vm = app.mount('#root');
+
+</script>
+</html>

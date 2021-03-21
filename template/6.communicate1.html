@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root">
+    </div>
+</body>
+
+<script>
+    // 
+    const app = Vue.createApp({
+        data() {
+           return {
+               count: 1, 
+           }
+        },
+        methods: {
+            handleAddOne(xxx, param, param2) {
+                console.log("this.count invoked",this.count)
+                this.count = xxx + param //(this.count+1) +2 +3
+                console.log("this.count param",this.count)
+                this.count+=param2 //+3
+                console.log("this.count param2",this.count)
+            }
+        },
+        template:`
+       <div>
+           <counter :count="count" @add-one="handleAddOne" />
+           <counter :count="count" @add-one="handleAddOne" />
+           <counter :count="count" @add-one="handleAddOne" />
+       </div>
+        `,
+    })
+
+    app.component('counter', {
+        props: ['count'],
+        // emits: ["addOne"], // 如果這個跟向外觸發的方法不同會報警告 用於維護
+        // 也可以寫成 用於檢驗
+        emits: {
+            add: (count) => {
+                // < 0 會報警告
+                if(count > 0) {
+                    return true
+                }
+                return false
+            },
+            // 要使用這個方法回傳true就不會報warning
+            addOne: () => {
+                return true
+            },
+        },
+        methods: {
+            handleClick() {
+                // 1. 此時子組件不能修改count
+                // this.count += 1;
+                // 2. 但可以觸發要父組件修改的事件
+                // 一般觸發事件時用駝峰 監聽事件時用--
+                this.$emit('addOne', this.count + 1, 2, 3)
+            }
+        },
+        // 流程
+        // 1. 子組件接收從父組件傳來的prop count
+        // 2. 當點擊子組件內部的方法觸發handleClick
+        // 3. handleClick會invoke父組件的 addOne function
+        // 4. 順利+param (e, args...) 第一個是觸發 第二個以後是監聽事件的引數
+        template: `
+        <div @click="handleClick">{{ count }}</div>
+        ` ,
+    })
+
+   
+    const vm = app.mount('#root');
+
+</script>
+</html>

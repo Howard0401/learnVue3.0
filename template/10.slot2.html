@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root">
+    </div>
+</body>
+
+<script>
+    const app = Vue.createApp({
+        data() {
+           return {
+               text:'提交'
+           }
+        },
+        // slot 插槽插入不同的內容
+        // slot 不能綁定事件 可以放在其他標籤裡面
+        // 在哪個template裡面調用 slot就是哪個template的數據
+        template:`
+        1. 具名插槽 (簡寫)
+        <layout>
+            <template #ha>
+                <div>
+                    header
+                </div>
+            </template>
+            <template #fo>
+                <div>
+                    footer
+                </div>
+            </template>
+        </layout>
+
+        <br />
+        
+        2. 擴充插槽 (1. 父傳給子 2. 子拿到屬性以後 3.在父印出)
+        
+        <br/>
+
+        <list v-slot="slotProps">
+            <span>{{slotProps.item}}</span>    
+        </list>
+
+        <br/>
+        ES6 解構
+        <list v-slot="{item}">
+            <span>{{item}}</span>    
+        </list>
+
+        `,
+    })
+
+    app.component('layout', {
+        template:
+        `
+        <div>
+            <br />
+            <slot name="ha"></slot>
+            <div>content</div >
+            <slot name="fo"></slot>
+        </div>
+        `
+    })
+
+    app.component('list', {
+        data() {
+            return {list:[1,2,3]}
+        },
+        template: `
+        <div>
+            <slot v-for="item in list" :item="item"/>
+        </div>    
+        `
+    })
+
+   
+    const vm = app.mount('#root');
+
+</script>
+</html>

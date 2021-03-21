@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <style> 
+        /* 動畫 */
+        @keyframes leftToRight {
+            0% {
+                transform: translateX(-100px);
+            }
+            50% {
+                transform: translateX(-50px);
+            }
+            0% {
+                transform: translateX(-50px);
+            }
+        }
+        .animation {
+            animation: leftToRight 3s;
+        }
+
+        /* 過渡 */
+        .transition {
+            transition: 3s background-color ease;;
+        }
+
+        .blue {
+            background: blue;
+        }
+
+        .green {
+            background: green;
+        }
+
+    </style>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root">
+    </div>
+</body>
+
+<script>
+    // 第三種 使用local directives
+    const direct = {
+        focus: {
+            mounted(el) {
+                el.focus();
+            }
+        }
+    }
+    //自定義 directive
+    const app = Vue.createApp({
+        data() {
+            return {
+                flag: true,
+                tmp: true
+            }
+        },
+        number: 2,
+        // 第一種 改變refs標籤
+        mounted() {
+            this.$refs.input.focus()
+        },
+        // 第三種 需在parent template中註冊 
+        // 注意: 一旦在此註冊後，會覆寫自定義的全局directive
+        // directives: direct, 
+        template:`
+        <div>
+            兩種寫法   <br/>
+            1.
+            <input ref="input"/>   <br/>
+
+            2.  
+            <input v-focus />       <br/>
+            
+            3.
+            <input v-focus />      <br/>
+
+            4.(vm.$data.flag = ture) 
+            <div v-show="flag"> 
+            </div>                  
+
+            5.(vm.$data.tmp = ture)
+            <div v-if="tmp"> 
+                <input v-focus /> 
+            </div>
+            <br/>
+            
+        </div>
+        `
+    })
+
+    // 第二種 使用 global directive
+    app.directive('focus', {
+        //順便複習生命週期
+        beforeMount() {
+            console.log('beforeMount')
+        },
+        mounted(el) {
+            console.log('mounted')
+            el.focus()
+        },
+        // 渲染結果被改變後 vm.$data.flag = false
+        beforeUpdate() {
+            console.log('beforeUpdate')
+        },
+        updated() {
+            console.log('updated');
+        },
+        // 標籤被銷毀後 vm.$data.tmp = false
+        beforeUnmount() {
+            console.log('beforeUnmount');
+        },
+        unmounted() {
+            console.log('unmounted');
+        },
+    })
+
+    const vm = app.mount('#root');
+
+</script>
+</html>

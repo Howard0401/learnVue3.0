@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <style> 
+        /* 動畫 */
+        @keyframes leftToRight {
+            0% {
+                transform: translateX(-100px);
+            }
+            50% {
+                transform: translateX(-50px);
+            }
+            0% {
+                transform: translateX(-50px);
+            }
+        }
+        .animation {
+            animation: leftToRight 3s;
+        }
+
+        /* 過渡 */
+        .transition {
+            transition: 3s background-color ease;;
+        }
+
+        .blue {
+            background: blue;
+        }
+
+        .green {
+            background: green;
+        }
+
+    </style>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root">
+    </div>
+</body>
+
+<script>
+    // 局部Mixin
+    // 原組件優先級 data, methods override myMixin的組件
+    // 而created()這種生命週期函數 則都會執行
+    // 但該組件的子組件用不了Mixin，除非在該組件的子組件中也宣告
+    // const myMixin = {
+    //     data() {
+    //         return {
+    //             number: 2,
+    //             count: 1,
+    //         }
+    //     },
+    //     methods: {
+    //         handleClick() {
+    //             console.log('mixin handleClick')
+    //         },
+    //     },
+    //     created() {
+    //         console.log("mixin created")
+    //     }
+    // }
+
+   
+
+    const app = Vue.createApp({
+        // data() {
+        //    return {
+        //         number: 1,
+        //    }
+        // },
+        // 但生命週期函數會先執行mixin再執行該組件內的created
+        created() {
+            console.log("created")
+        },
+        // 當該組件中沒有數據number時, 將myMixin的number混入
+        // 區域mixin要加，全域的不用
+        // mixins: [myMixin],
+        methods: {
+            handleClick() {
+                console.log('handleClick')
+            },
+        },
+        template:`
+            <div>
+                <div> {{ number }}</div>
+                <div> {{ count }}</div>
+                <child />
+                <button @click="handleClick"> 增加 </button>
+                <br/>
+            </div>
+        `,
+    })
+
+    app.component('child', {
+        template:"<div>{{ count }}</div>",
+        // 當該組件中沒有數據number時, 將myMixin的number混入
+        // 區域mixin要加，全域的不用
+        // mixins: [myMixin],
+    })
+
+    // global mixin
+    app.mixin({
+        data() {
+            return {
+                number: 2,
+                count: 1,
+            }
+        },
+        methods: {
+            handleClick() {
+                console.log('mixin handleClick')
+            },
+        },
+        created() {
+            console.log("mixin created")
+        }
+    })
+
+
+    const vm = app.mount('#root');
+
+</script>
+</html>

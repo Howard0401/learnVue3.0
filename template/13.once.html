@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root">
+    </div>
+</body>
+
+<script>
+    // v-once
+    const app = Vue.createApp({
+        data() {
+           return {
+                count: 1,
+           }
+        },
+        mounted() {
+            // $refs 顯示DOM 
+            console.log(this.$refs.count);
+             // $refs 也可以修改DOM 節點
+            this.$refs.count.innerHTML = 'hello';
+            // $refs 也可以獲取組件的function 慎用
+            console.log(this.$refs.common.sayHello())
+        },
+
+        // 直接傳給child-child
+        // ** 不能直接傳data裡面的東西 
+        // 可以用return函數傳
+        // 這個是一次是傳遞，非雙向綁定，不會隨上面的改變
+        provide() {
+            return {
+                count1: 2,
+                count2: this.count+3,
+            }
+        },
+        template:`
+        1.讓某個標籤只渲染一次
+        <br/>
+        <div @click="count += 1" v-once>
+            {{ count }}
+        </div>
+ 
+        <br/>
+
+        2.獲取真正的DOM(盡量在mounted裡加載)
+        <br/>
+        <div ref="count">
+            {{ count }}
+        </div>
+
+        3. 從子模板取值  
+        <br/>
+        <div>
+            <common-item ref="common" />
+        </div>
+
+        4. provide / inject
+        <br/>
+        <div>
+            <child :count="count" />
+        </div>
+        `,
+    })
+
+    app.component('common-item', {
+        methods: {
+            sayHello() {
+                alert('hello');
+            }
+        },
+        template:
+        `
+        <input />
+        `
+    })
+
+    app.component('child', {
+        props:['count'],
+        template:
+        `
+        <child-child :count="count"> {{ count }} </child-child>
+        `
+    })
+   // 傳了三層 很麻煩 有沒有更好的寫法?
+    app.component('child-child', {
+        inject:['count1','count2'],
+        props:['count'],
+        template:
+        `
+        <div> {{ count }} </div>
+        <div> {{ count1 }} </div>
+        <div> {{ count2 }} </div>
+        `
+    })
+
+    const vm = app.mount('#root');
+
+</script>
+</html>

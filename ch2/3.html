@@ -1,0 +1,43 @@
+ <!-- 生命週期 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root">
+        <div>{{content}}</div>
+    </div>
+</body>
+
+<script>
+    // 創建一個Vue實例, 實例名是 app
+    // 傳入給最外層組件的參數,該怎麼顯示
+    // MVVM model view viewModel
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: '<strong>hellow world</strong>',
+
+                disable: true,
+            }
+        },
+        //  v-once 只初始化用一次 不會再變動
+        template: `<div v-once> {{ message }}</div>`
+        // template: `<div v-html="message"></div>`,
+        // template: `<div v-bind:title="message">hellow world</div>`,
+        // template: `<input :disabled="disable">`,
+        // template: `<div>{{ 放JS表達式 但不能放語句}}</div>`
+
+    });
+    // 掛載到id="root" (#是指id)
+    // vm 代表vue應用的根組件
+    // 1. mounted
+    const vm = app.mount('#root');
+
+</script>
+</html>

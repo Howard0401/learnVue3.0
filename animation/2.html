@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <style> 
+        /* 動畫 */
+        @keyframes leftToRight {
+            0% {
+                transform: translateX(-100px);
+            }
+            50% {
+                transform: translateX(-50px);
+            }
+            0% {
+                transform: translateX(-50px);
+            }
+        }
+        .animation {
+            animation: leftToRight 3s;
+        }
+
+        /* 過渡 */
+        .transition {
+            transition: 3s background-color ease;;
+        }
+
+        .blue {
+            background: blue;
+        }
+
+        .green {
+            background: green;
+        }
+
+    </style>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root">
+    </div>
+</body>
+
+<script>
+    // transition. animate
+    const app = Vue.createApp({
+        data() {
+           return {
+           show: false,
+
+           }
+        },
+        methods: {
+            handleAnimation() {
+                this.animate.animation = !this.animate.animation
+            },
+
+        },
+        template:`
+            <div>
+                <div :class="animate">hellow world</div>
+                <button @click="handleAnimation">切換 </button>
+                <br/>
+               
+            </div>
+        `,
+    })
+
+    app.component('common-item', {
+        methods: {
+            sayHello() {
+                alert('hello');
+            }
+        },
+        template:
+        `
+        <input />
+        `,
+    })
+
+    const vm = app.mount('#root');
+
+</script>
+</html>

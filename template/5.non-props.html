@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="root">
+    </div>
+</body>
+
+<script>
+    // 
+    const app = Vue.createApp({
+        data() {
+           return {
+           }
+        },
+        template:`
+       <div>
+           <counter style="color: red;" msg="-1"/>
+       </div>
+        `,
+    })
+
+    app.component('counter', {
+    // 如果沒有 inheritAttrs: false, 那父組件使用red的特性會覆寫給子組件
+    // inheritAttrs: false,
+
+    // 如果子組件多個對應一個父組件呢?
+    // 可以用  v-bind="$attrs" 這個方式賦值
+        mounted() {
+            // 3. use $attrs by javascript
+            console.log(this.$attrs.msg)
+            console.log(this.$attrs.style)
+        },
+        template: `
+        <div>Counter</div>
+        <br/>
+
+        1. bind all prop
+        <div v-bind="$attrs">Counter</div> 
+        <br/>
+
+        2. only bind style
+        <div :style="$attrs.style">Counter</div> 
+        <br/>
+
+        <div>Counter</div>
+        ` ,
+    })
+
+   
+    const vm = app.mount('#root');
+
+</script>
+</html>
